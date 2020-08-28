@@ -21,6 +21,7 @@ BUILD_PACKAGES=(
     "ffmpeg 4.2.2"
     "luajit 2.1.0-beta3"
     "freetype 2.10.1"
+    "rnnoise 90ec41ef659fd82cfec2103e9bb7fc235e9ea66c"
 )
 
 ## START UTILITIES ##
@@ -366,6 +367,26 @@ build_freetype() {
     find /tmp/obsdeps/lib -name libfreetype\*.dylib -exec cp \{\} ${DEPS_DEST}/lib/ \;
     rsync -avh --include="*/" --include="*.h" --exclude="*" include/* ${DEPS_DEST}/include/
     unset CFLAGS
+    cd $WORK_DIR
+}
+
+build_rnnoise() {
+    RNNOISE_VERSION=${1}
+    hr "Building RNNoise ${RNNOISE_VERSION}"
+
+    # RNNoise
+    git clone https://github.com/xiph/rnnoise.git
+    cd ./rnnoise
+    git checkout ${RNNOISE_VERSION}
+    ./autogen.sh
+    ./configure --disable-shared --enable-static --prefix="/tmp/obsdeps"
+    make -j
+    make install
+    ln -f -s rnnoise.*.dylib rnnoise.dylib
+    find . -name \*.dylib -exec cp \{\} ${DEPS_DEST}/bin/ \;
+    rsync -avh --include="*/" --include="*.h" --exclude="*" ../* ${DEPS_DEST}/include/
+    rsync -avh --include="*/" --include="*.h" --exclude="*" ./* ${DEPS_DEST}/include/
+
     cd $WORK_DIR
 }
 ## END BUILD FUNCS ##

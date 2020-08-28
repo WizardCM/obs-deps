@@ -29,6 +29,7 @@ jobs:
       LIBJANSSON_VERSION: '2.12'
       LIBX264_VERSION: 'origin/stable'
       LIBMBEDTLS_VERSION: '2.16.5'
+      LIBRNNOISE_VERSION: '90ec41ef659fd82cfec2103e9bb7fc235e9ea66c'
       LIBSRT_VERSION: '1.4.1'
       FFMPEG_VERSION: '4.2.2'
       LIBLUAJIT_VERSION: '2.1.0-beta3'
@@ -165,6 +166,30 @@ jobs:
       - name: 'Install dependency libogg'
         shell: bash
         working-directory: ${{ github.workspace }}/CI_BUILD/ogg-${{ env.LIBOGG_VERSION }}/build
+        run: |
+          make install
+      - name: 'Restore librnnoise from cache'
+        id: librnnoise-cache
+        uses: actions/cache@v2
+        env:
+          CACHE_NAME: 'librnnoise-cache'
+        with:
+          path: ${{ github.workspace }}/CI_BUILD/rnnoise
+          key: ${{ runner.os }}-${{ env.CACHE_NAME }}-${{ env.LIBRNNOISE_VERSION }}
+      - name: 'Build dependency librnnoise'
+        if: steps.librnnoise-cache.outputs.cache-hit != 'true'
+        shell: bash
+        working-directory: ${{ github.workspace }}/CI_BUILD
+        run: |
+          git clone https://github.com/xiph/rnnoise.git
+          cd ./rnnoise
+          git checkout ${{ env.LIBRNNOISE_VERSION }}
+          ./autogen.sh
+          ./configure --disable-shared --enable-static --prefix="/tmp/obsdeps"
+          make -j${{ env.PARALLELISM }}
+      - name: 'Install dependency librnnoise'
+        shell: bash
+        working-directory: ${{ github.workspace }}/CI_BUILD/rnnoise
         run: |
           make install
       - name: 'Restore libvorbis from cache'
