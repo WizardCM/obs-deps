@@ -21,6 +21,7 @@ export LIBVPX_VERSION="1.8.2"
 export LIBJANSSON_VERSION="2.12"
 export LIBX264_VERSION="origin/stable"
 export LIBMBEDTLS_VERSION="2.16.5"
+export LIBRNNOISE_VERSION="90ec41ef659fd82cfec2103e9bb7fc235e9ea66c"
 export LIBSRT_VERSION="1.4.1"
 export FFMPEG_VERSION="4.2.2"
 export LIBLUAJIT_VERSION="2.1.0-beta3"
@@ -73,7 +74,7 @@ caught_error() {
     exit 1
 }
 
-build_731f3204-e7ea-4206-8378-9794efe4029b() {
+build_adcf6479-473a-4910-b49d-8e6966b04778() {
     step "Install Homebrew dependencies"
     trap "caught_error 'Install Homebrew dependencies'" ERR
     ensure_dir ${BASE_DIR}
@@ -83,7 +84,7 @@ build_731f3204-e7ea-4206-8378-9794efe4029b() {
 }
 
 
-build_7d848e22-0591-451e-bac4-e0b75ef3473d() {
+build_bc61c6b6-3e9f-4176-a7d8-f03d1cb6b101() {
     step "Get Current Date"
     trap "caught_error 'Get Current Date'" ERR
     ensure_dir ${BASE_DIR}
@@ -92,7 +93,7 @@ build_7d848e22-0591-451e-bac4-e0b75ef3473d() {
 }
 
 
-build_cf6816b8-3768-4076-8ee9-8dd072e4f6c8() {
+build_af27c808-4c6b-4308-8fa7-9a86966d66cd() {
     step "Build environment setup"
     trap "caught_error 'Build environment setup'" ERR
     ensure_dir ${BASE_DIR}
@@ -105,7 +106,7 @@ build_cf6816b8-3768-4076-8ee9-8dd072e4f6c8() {
 }
 
 
-build_43e9bba1-21ed-42f3-8e8a-3a6b701b1434() {
+build_e9cf08ed-de52-43f7-bc49-8d3a8317f80e() {
     step "Build dependency Qt"
     trap "caught_error 'Build dependency Qt'" ERR
     ensure_dir ${BASE_DIR}/CI_BUILD
@@ -148,7 +149,7 @@ build_43e9bba1-21ed-42f3-8e8a-3a6b701b1434() {
 }
 
 
-build_9a308b2f-5ecf-4808-aae5-3a9d110268cd() {
+build_50b26b94-be33-4f93-aef5-aa15433c09ae() {
     step "Package dependencies"
     trap "caught_error 'Package dependencies'" ERR
     ensure_dir /tmp
@@ -164,11 +165,11 @@ build_9a308b2f-5ecf-4808-aae5-3a9d110268cd() {
 obs-deps-build-main() {
     ensure_dir ${BASE_DIR}
 
-    build_731f3204-e7ea-4206-8378-9794efe4029b
-    build_7d848e22-0591-451e-bac4-e0b75ef3473d
-    build_cf6816b8-3768-4076-8ee9-8dd072e4f6c8
-    build_43e9bba1-21ed-42f3-8e8a-3a6b701b1434
-    build_9a308b2f-5ecf-4808-aae5-3a9d110268cd
+    build_adcf6479-473a-4910-b49d-8e6966b04778
+    build_bc61c6b6-3e9f-4176-a7d8-f03d1cb6b101
+    build_af27c808-4c6b-4308-8fa7-9a86966d66cd
+    build_e9cf08ed-de52-43f7-bc49-8d3a8317f80e
+    build_50b26b94-be33-4f93-aef5-aa15433c09ae
 
     hr "All Done"
 }
